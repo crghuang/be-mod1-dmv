@@ -13,6 +13,13 @@ RSpec.describe Facility do
       
     # Add a service
     @facility_1.add_service('Vehicle Registration')
+
+    # Create registrant instances
+    @registrant_1 = Registrant.new('Bruce', 18, true )
+    @registrant_2 = Registrant.new('Penny', 16 )
+    @registrant_3 = Registrant.new('Tucker', 15 )
+  
+    # Written test
   end
 
   describe '#initialize' do
@@ -74,6 +81,20 @@ RSpec.describe Facility do
       @facility_2.register_vehicle(@bolt)
       expect(@facility_2.registered_vehicles).to eq([])
       expect(@facility_2.collected_fees).to eq(0)
+    end
+  end
+
+  describe '#administer written test' do
+    it 'can administer written tests' do
+      expect(@registrant_1.license_data).to eq({:written=>false, :license=>false, :renewed=>false})
+      expect(@registrant_1.permit?).to eq(true)
+      expect(@facility_1.administer_written_test(@registrant_1)).to eq(false)
+      @facility_1.add_service('Written Test')
+      expect(@facility_1.administer_written_test(@registrant_1)).to eq(true)
+      # expect(@registrant_1.license_data).to eq({:written=>true, :license=>false, :renewed=>false})
+      # expect(@registrant_2.age).to eq(16)
+      # expect(@registrant_2.permit?).to eq(false)
+      # expect(@facility_1.administer_written_test(@registrant_2)).to eq(false)
     end
   end
 end
