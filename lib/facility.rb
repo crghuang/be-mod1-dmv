@@ -57,7 +57,7 @@ class Facility
     facilities.map do |facility|
       case facility[:state]
       when "CO"
-        name = facility[:name]
+        name = facility[:dmv_office]
         address = [
             facility[:address_li],
             facility[:address__1],
@@ -66,7 +66,7 @@ class Facility
             facility[:zip]
           ].join(" ")
         phone = facility[:phone]
-        services = facility[:services_p].split(%r{(,|;)\s*})
+        services = facility[:services_p].split(/(,|;)\s*/)
 
       when "NY"
         name = facility[:office_name]
@@ -97,12 +97,15 @@ class Facility
         services = []
       end
 
+      # ** Note: Create var for facility, run 'add_service' for full list before appending to facilities list
+      # services.each { |service| add_service(service) } if !services.empty?
+
       facilities_list << Facility.new({
         :name     => name,
         :address  => address,
-        :phone    => phone,
-        :services => services
+        :phone    => phone
       })
     end
+    facilities_list
   end
 end

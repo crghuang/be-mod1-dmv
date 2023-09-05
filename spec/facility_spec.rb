@@ -16,7 +16,6 @@ RSpec.describe Facility do
     @registrant_2 = Registrant.new('Penny', 16 )
     @registrant_3 = Registrant.new('Tucker', 15 )
   
-    # Written test
   end
 
   describe '#initialize' do
@@ -162,6 +161,18 @@ RSpec.describe Facility do
       @facility_1.administer_road_test(@registrant_2)
       expect(@facility_1.renew_drivers_license(@registrant_2)).to eq(true)
       expect(@registrant_2.license_data).to eq({:written=>true, :license=>true, :renewed=>true})
+    end
+  end
+
+  describe '#create_facilities' do
+    it 'converts co facility information from API correct format' do
+      @co_dmv_office_locations = DmvDataService.new.co_dmv_office_locations
+      co_facility_info = @facility.create_facilities(@co_dmv_office_locations)
+      expect(co_facility_info.class).to eq(Array)
+      expect(co_facility_info.first.name).to eq('DMV Tremont Branch')
+      expect(co_facility_info.first.address).to eq('2855 Tremont Place Suite 118 Denver CO 80205')
+      expect(co_facility_info.first.phone).to eq('(720) 865-4600')
+      # expect(co_facility_info.first.services).to match_array(['vehicle titles', 'registration', 'renewals', 'VIN inspections'])
     end
   end
 end
